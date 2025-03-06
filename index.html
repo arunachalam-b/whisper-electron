@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper Electron</title>
+</head>
+<body>
+    <input type="file" id="fileInput" accept="audio/*">
+    <button onclick="transcribe()">Transcribe</button>
+    <pre id="output"></pre>
+
+    <script>
+        const { ipcRenderer } = require("electron");
+
+        async function transcribe() {
+            const fileInput = document.getElementById("fileInput");
+            if (fileInput.files.length === 0) return alert("Select an audio file first");
+
+            console.log("Files ========= ", fileInput.files[0]);
+            // const filePath = fileInput.files[0].path;
+            const filePath = "/home/arunachalam/Music/harvard.wav";
+            const output = await ipcRenderer.invoke("transcribe", filePath);
+            document.getElementById("output").innerText = output;
+        }
+    </script>
+</body>
+</html>
